@@ -1,5 +1,8 @@
 from my_project.db_init import db
 from my_project.auth.models.route_stop import RouteStop
+from sqlalchemy import text
+
+
 
 class RouteStopDAO:
     def get_all(self):
@@ -33,3 +36,22 @@ class RouteStopDAO:
             db.session.commit()
             return True
         return False
+
+    from sqlalchemy import text
+    from my_project.db_init import db
+
+
+    def insert_route_stop(self, route_id, stop_id, price_from_previous):
+        # Створюємо SQL-запит для виклику збереженої процедури
+        sql = text("""
+            CALL insert_route_stop(:route_id, :stop_id, :price_from_previous)
+        """)
+
+        try:
+            # Виконуємо запит
+            db.session.execute(sql, {'route_id': route_id, 'stop_id': stop_id, 'price_from_previous': price_from_previous})
+            db.session.commit()
+            return {"message": "Route stop inserted successfully."}, 200
+        except Exception as e:
+            db.session.rollback()  # У разі помилки виконуємо відкат
+            return {"error": str(e)}, 500

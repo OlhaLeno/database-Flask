@@ -6,7 +6,7 @@ class Driver(db.Model):
     driver_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(45), nullable=False)
     license_number = db.Column(db.String(45), nullable=False)
-    experience_years = db.Column(db.String(45), nullable=False)
+    experience_years = db.Column(db.Integer)
     phone_number = db.Column(db.String(14), nullable=False)
 
     def to_dict(self):

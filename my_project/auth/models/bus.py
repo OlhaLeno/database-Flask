@@ -12,11 +12,12 @@ class Bus(db.Model):
     mileage = db.Column(db.String(100), nullable=False)
     ownership_type = db.Column(db.String(100), nullable=False)
 
-
     route_id = db.Column(db.Integer, db.ForeignKey('route.route_id'), nullable=True)
 
-
     route = db.relationship('Route', back_populates='buses')
+
+    # Відношення з таблицею BusInspection
+    inspections = db.relationship('BusInspection', back_populates='bus')
 
     def to_dict(self):
         return {
@@ -27,5 +28,5 @@ class Bus(db.Model):
             'mileage': self.mileage,
             'ownership_type': self.ownership_type,
             'route_id': self.route_id,
-
+            'inspections': [inspection.to_dict() for inspection in self.inspections]  # Включаємо огляди в результат
         }

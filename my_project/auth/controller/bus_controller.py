@@ -35,3 +35,13 @@ def get_buses_by_route(route_id):
 
     buses = bus_service.get_buses_by_route(route_id)
     return jsonify([bus.to_dict() for bus in buses]), 200
+
+def create_databases():
+    response = bus_service.create_databases()
+
+    # Перевіряємо, чи є 'response' словником і чи містить він ключ 'error'
+    if isinstance(response, dict) and 'error' in response:
+        return jsonify(response), 500
+
+    # Якщо все в порядку, повертаємо успішну відповідь
+    return jsonify(response), 200

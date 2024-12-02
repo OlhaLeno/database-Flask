@@ -22,3 +22,6 @@ class BusService:
     def get_buses_by_route(self, route_id):
 
         return self.bus_dao.get_buses_by_route(route_id)
+
+    def create_databases(self):
+        return self.bus_dao.create_databases_from_buses()

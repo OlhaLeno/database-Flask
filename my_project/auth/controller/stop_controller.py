@@ -16,17 +16,24 @@ def get_stop_by_id(stop_id):
 def create_stop():
     data = request.json
     new_stop = stop_service.create_stop(data)
-    return jsonify(new_stop.to_dict()), 201
+    if isinstance(new_stop, dict) and 'error' in new_stop:
+        return jsonify(new_stop), 400
+    return jsonify({'message': 'stop added successfully'}), 201
 
 def update_stop(stop_id):
     data = request.json
-    updated_stop = stop_service.update_stop(stop_id, data)
-    if updated_stop:
-        return jsonify(updated_stop.to_dict()), 200
-    return jsonify({'message': 'Stop not found'}), 404
+    result= stop_service.update_stop(stop_id, data)
+    if isinstance(result, dict) and 'error' in result:
+        return jsonify(result), 400  # Повертаємо помилку тригера
+    if result:
+        return jsonify({'message': 'stop updated successfully', 'stop': result.to_dict()}), 200
+    return jsonify({'message': 'stop not found'}), 404
 
 def delete_stop(stop_id):
-    success = stop_service.delete_stop(stop_id)
-    if success:
-        return jsonify({'message': 'Stop deleted successfully'}), 200
-    return jsonify({'message': 'Stop not found'}), 404
+    result = stop_service.delete_stop(stop_id)
+    if isinstance(result, dict) and 'error' in result:
+        return jsonify(result), 400
+    if result:
+        return jsonify({'message': 'stop deleted successfully'}), 200
+    return jsonify({'message': 'stop not found'}), 404
+

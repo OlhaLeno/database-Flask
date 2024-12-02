@@ -1,4 +1,5 @@
 from my_project.auth.dao.route_stop_dao import RouteStopDAO
+from flask import request, jsonify
 
 class RouteStopService:
     def __init__(self):
@@ -20,3 +21,7 @@ class RouteStopService:
 
     def delete_route_stop(self, route_stop_id):
         return self.route_stop_dao.delete(route_stop_id)
+
+    def insert_route_stop(self, route_id, stop_id, price_from_previous):
+        """Інтерфейс для вставки RouteStop через DAO"""
+        return self.route_stop_dao.insert_route_stop(route_id, stop_id, price_from_previous)

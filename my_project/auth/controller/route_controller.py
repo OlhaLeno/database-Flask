@@ -30,3 +30,7 @@ def delete_route(route_id):
     if success:
         return jsonify({'message': 'Route deleted successfully'}), 200
     return jsonify({'message': 'Route not found'}), 404
+
+def insert_route_entries():
+    response, status_code = route_service.insert_route_entries()
+    return jsonify(response), status_code

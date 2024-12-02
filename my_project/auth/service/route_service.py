@@ -1,4 +1,5 @@
 from my_project.auth.dao.route_dao import RouteDAO
+from sqlalchemy.exc import SQLAlchemyError
 
 class RouteService:
     def __init__(self):
@@ -18,3 +19,11 @@ class RouteService:
 
     def delete_route(self, route_id):
         return self.route_dao.delete(route_id)
+
+    def insert_route_entries(self):
+        try:
+            # Викликаємо DAO метод для вставки записів
+            self.route_dao.insert_route_entries()
+            return {"message": "10 route entries inserted successfully!"}, 200
+        except Exception as e:
+            return {"message": str(e)}, 500

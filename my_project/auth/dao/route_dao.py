@@ -1,5 +1,7 @@
 from my_project.db_init import db
 from my_project.auth.models.route import Route
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import text
 
 class RouteDAO:
     def get_all(self):
@@ -30,3 +32,12 @@ class RouteDAO:
             db.session.commit()
             return True
         return False
+
+    def insert_route_entries(self):
+        try:
+            # Викликаємо збережену процедуру через text()
+            db.session.execute(text("CALL insert_route_entries()"))
+            db.session.commit()
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            raise Exception(f"Error inserting route entries: {str(e)}")

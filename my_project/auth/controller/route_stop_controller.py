@@ -34,3 +34,25 @@ def delete_route_stop(route_stop_id):
     if success:
         return jsonify({'message': 'Route Stop deleted successfully'}), 200
     return jsonify({'message': 'Route Stop not found'}), 404
+
+
+def insert_route_stop():
+    # Отримуємо дані з запиту
+    data = request.get_json()
+
+    # Перевіряємо наявність всіх необхідних параметрів
+    route_id = data.get('route_id')
+    stop_id = data.get('stop_id')
+    price_from_previous = data.get('price_from_previous')
+
+    # Якщо відсутній хоча б один параметр, повертаємо помилку
+    if not route_id or not stop_id or price_from_previous is None:
+        return jsonify({"error": "Missing required parameters"}), 400
+
+    # Викликаємо сервіс для вставки зупинки маршруту
+    result, status_code = route_stop_service.insert_route_stop(
+        route_id, stop_id, price_from_previous
+    )
+
+    # Повертаємо результат
+    return jsonify(result), status_code
